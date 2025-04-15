@@ -1,18 +1,28 @@
 const jwt = require("jsonwebtoken");
+const User = require("../models/User");
+const ErrorResponse = require("../utils/errorHandler");
 
-const authMiddleware = (req, res, next) => {
-  const token = req.header("Authorization")?.replace("Bearer ", "");
-  if (!token) {
-    return res.status(401).json({ message: "No token provided" });
+module.exports = async (req, res, next) => {
+  let token;
+
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
   }
 
+  if (!token) {
+    return next(new ErrorResponse("No token provided", 401));
+  }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.userId;
+    req.user = await User.findById(decoded.id);
+    if (!req.user) {
+      return next(new ErrorResponse("User not found", 401));
+    }
     next();
   } catch (error) {
-    res.status(401).json({ message: "Invalid token" });
+    return next(new ErrorResponse("Invalid token", 401));
   }
 };
-
-module.exports = authMiddleware;
