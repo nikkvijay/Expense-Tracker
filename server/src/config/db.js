@@ -8,36 +8,37 @@ const options = {
   autoIndex: true,
 };
 
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
 const connectDB = async () => {
-  try {
-    // Check if MONGODB_URL is defined
+  if (cached.conn) {
+    return cached.conn;
+  }
+  if (!cached.promise) {
     if (!process.env.MONGODB_URL) {
       throw new Error("MONGODB_URL is not defined in environment variables");
     }
-
-    // Connect to MongoDB
-    const conn = await mongoose.connect(process.env.MONGODB_URL, options);
-
-    // Handle connection events
-    mongoose.connection.on("error", (err) => {
-      console.error("MongoDB connection error:", err);
+    cached.promise = mongoose.connect(process.env.MONGODB_URL, options).then((mongoose) => {
+      mongoose.connection.on("error", (err) => {
+        console.error("MongoDB connection error:", err);
+      });
+      return mongoose;
     });
-  } catch (error) {
-    console.error(`Error: ${error.message}`);
-    process.exit(1);
   }
+  try {
+    cached.conn = await cached.promise;
+  } catch (error) {
+    console.error(`MongoDB connection error: ${error.message}`);
+    throw error;
+  }
+  return cached.conn;
 };
 
 // Graceful shutdown handler
-process.on("SIGINT", async () => {
-  try {
-    await mongoose.connection.close();
-
-    process.exit(0);
-  } catch (err) {
-    console.error("Error during database disconnection:", err);
-    process.exit(1);
-  }
-});
+/* Graceful shutdown is not needed in serverless environments */
 
 module.exports = connectDB;
