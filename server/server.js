@@ -55,6 +55,11 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/expenses", expenseRoutes);
 
+// Basic root route for testing
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
+
 // ======================
 // Error Handling
 // ======================
