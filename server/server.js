@@ -13,9 +13,7 @@ const PORT = process.env.PORT || 5000;
 // Initialize express app
 const app = express();
 
-// ======================
-// Database Configuration
-// ======================
+// Connect to database
 connectDB();
 
 // ======================
@@ -40,11 +38,6 @@ app.use(express.json());
 // ======================
 app.use("/api/auth", authRoutes);
 app.use("/api/expenses", expenseRoutes);
-
-// Basic root route for testing
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
 
 // ======================
 // Error Handling
