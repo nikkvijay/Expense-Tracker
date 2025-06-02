@@ -1,6 +1,7 @@
 // Import required packages
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config();
 
 // Import local modules
 const connectDB = require("./src/config/db");
@@ -23,7 +24,7 @@ connectDB();
 // CORS Configuration
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: [process.env.FRONTEND_URL],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
