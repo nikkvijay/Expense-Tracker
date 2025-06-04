@@ -95,8 +95,8 @@ const Dashboard = () => {
     return (
         <div className="min-h-screen bg-gray-50">
             <Navbar />
-            <div className="container mx-auto p-4 max-w-7xl">
-                <h1 className="text-3xl font-bold my-6 text-gray-800">Expense Dashboard</h1>
+            <div className="container mx-auto px-9 py-5">
+                <h1 className="text-3xl font-bold my-6 text-gray-800">Dashboard</h1>
                 <ExpenseStats expenses={expenses} />
                 <ExpenseForm
                     onSubmit={handleSubmit}

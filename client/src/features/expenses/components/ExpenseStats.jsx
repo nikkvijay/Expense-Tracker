@@ -2,7 +2,7 @@ import {
     TrendingUp,
     TrendingDown,
     Calendar,
-    DollarSign
+    Wallet
 } from 'lucide-react';
 import { formatCurrency } from '@/utils/formatCurrency';
 
@@ -46,7 +46,7 @@ const ExpenseStats = ({ expenses }) => {
         {
             title: "Total Expenses",
             value: formatCurrency(totalExpenses),
-            icon: <DollarSign className="h-6 w-6 text-blue-500" />,
+            icon: <Wallet className="h-6 w-6 text-blue-500" />,
             color: "bg-blue-50 text-blue-500"
         },
         {

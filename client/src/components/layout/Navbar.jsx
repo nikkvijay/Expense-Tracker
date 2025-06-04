@@ -20,8 +20,8 @@ const Navbar = () => {
                 <div className="flex justify-between h-16">
                     <div className="flex items-center">
                         <Link to="/" className="flex items-center">
-                            <DollarSign className="h-8 w-8 text-expense-primary" />
-                            <span className="ml-2 text-xl font-bold text-gray-800">Smart Expense Organizer</span>
+                            <img src="images/PFM.png" className="h-10 w-10 text-expense-primary" />
+                            <span className="ml-2 text-xl font-bold text-gray-800">Cashilo</span>
                         </Link>
                     </div>
                     <div className="flex items-center space-x-4">
