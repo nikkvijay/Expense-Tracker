@@ -37,6 +37,17 @@ app.use(express.json());
 // ======================
 // Route Configuration
 // ======================
+
+//Health check routes
+app.get("/",(req,res)=>{
+  res.json({
+    success:true,
+    message:"Expense Tracker API is running successfully!",
+    timestamp: new Date().toISOString()
+  })
+})
+
+
 app.use("/api/auth", authRoutes);
 app.use("/api/expenses", expenseRoutes);
 
