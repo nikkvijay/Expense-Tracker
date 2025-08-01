@@ -1,0 +1,219 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light Mode - Clean and Modern */
+    --background: 210 17% 98%; /* #F9FAFB */
+    --foreground: 215 27% 27%; /* #1F2A44 */
+    
+    /* Card & Surface Colors */
+    --card: 0 0% 100%; /* #FFFFFF */
+    --card-foreground: 215 27% 27%; /* #1F2A44 */
+    --surface: 210 20% 98%; /* #F3F4F6 */
+    --surface-elevated: 0 0% 100%; /* #FFFFFF */
+    
+    /* Vibrant Primary Action Colors */
+    --primary: 260 80% 40%; /* #5B21B6 */
+    --primary-foreground: 0 0% 100%; /* #FFFFFF */
+    --primary-glow: 260 70% 50%; /* #7C3AED */
+    
+    /* Secondary Actions */
+    --secondary: 210 17% 91%; /* #E5E7EB */
+    --secondary-foreground: 215 27% 27%; /* #1F2A44 */
+    
+    /* Muted Elements */
+    --muted: 210 17% 94%; /* #ECEFF1 */
+    --muted-foreground: 215 20% 45%; /* #64748B */
+    
+    /* Accent for Success States */
+    --accent: 172 66% 45%; /* #14B8A6 */
+    --accent-foreground: 0 0% 100%; /* #FFFFFF */
+    
+    /* Expense Category Colors - Vibrant & Distinct */
+    --category-food: 24 80% 55%; /* #F97316 - Warm Orange */
+    --category-transport: 200 70% 50%; /* #0EA5E9 - Sky Blue */
+    --category-entertainment: 330 70% 60%; /* #EC4899 - Pink */
+    --category-bills: 220 60% 55%; /* #3B82F6 - Blue */
+    --category-shopping: 280 65% 60%; /* #8B5CF6 - Purple */
+    --category-health: 160 60% 45%; /* #10B981 - Emerald */
+    --category-education: 40 80% 55%; /* #FBBF24 - Amber */
+    --category-other: 180 50% 50%; /* #22D3EE - Cyan */
+    
+    /* Financial Status Colors */
+    --success: 142 76% 36%; /* #22C55E */
+    --success-foreground: 0 0% 100%; /* #FFFFFF */
+    --warning: 35 85% 48%; /* #F59E0B */
+    --warning-foreground: 215 27% 27%; /* #1F2A44 */
+    --destructive: 0 84% 60%; /* #EF4444 */
+    --destructive-foreground: 0 0% 100%; /* #FFFFFF */
+    
+    /* UI Elements */
+    --border: 210 20% 88%; /* #D1D5DB */
+    --input: 210 20% 92%; /* #E5E7EB */
+    --ring: 260 80% 40%; /* #5B21B6 */
+    --popover: 0 0% 100%; /* #FFFFFF */
+    --popover-foreground: 215 27% 27%; /* #1F2A44 */
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-surface: linear-gradient(180deg, hsl(var(--surface)), hsl(var(--background)));
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(var(--surface)));
+    
+    /* Shadows & Effects */
+    --shadow-soft: 0 2px 8px -2px hsl(215 27% 27% / 0.1);
+    --shadow-medium: 0 4px 16px -4px hsl(215 27% 27% / 0.15);
+    --shadow-large: 0 8px 32px -8px hsl(215 27% 27% / 0.2);
+    --shadow-glow: 0 0 20px hsl(var(--primary) / 0.25);
+    
+    /* Typography */
+    --font-heading: 'Inter', system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    
+    /* Spacing & Layout */
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    /* Dark Mode - Sleek and Luxurious */
+    --background: 215 27% 15%; /* #1E293B */
+    --foreground: 210 20% 95%; /* #F1F5F9 */
+    
+    /* Dark Mode Card & Surface Colors */
+    --card: 215 27% 18%; /* #2D3748 */
+    --card-foreground: 210 20% 95%; /* #F1F5F9 */
+    --surface: 215 27% 20%; /* #334155 */
+    --surface-elevated: 215 27% 22%; /* #374151 */
+    
+    /* Vibrant Primary (Enhanced for Dark Mode) */
+    --primary: 260 80% 50%; /* #7C3AED */
+    --primary-foreground: 0 0% 100%; /* #FFFFFF */
+    --primary-glow: 260 70% 60%; /* #A78BFA */
+    
+    /* Dark Mode Secondary */
+    --secondary: 215 27% 25%; /* #374151 */
+    --secondary-foreground: 210 20% 95%; /* #F1F5F9 */
+    
+    /* Dark Mode Muted */
+    --muted: 215 27% 22%; /* #374151 */
+    --muted-foreground: 210 20% 70%; /* #94A3B8 */
+    
+    /* Dark Mode Accent */
+    --accent: 172 66% 55%; /* #2DD4BF */
+    --accent-foreground: 215 27% 15%; /* #1E293B */
+    
+    /* Category Colors (Adjusted for Dark Mode) */
+    --category-food: 24 80% 60%; /* #FB923C */
+    --category-transport: 200 70% 55%; /* #38BDF8 */
+    --category-entertainment: 330 70% 65%; /* #F472B6 */
+    --category-bills: 220 60% 60%; /* #60A5FA */
+    --category-shopping: 280 65% 65%; /* #A78BFA */
+    --category-health: 160 60% 50%; /* #34D399 */
+    --category-education: 40 80% 60%; /* #FCD34D */
+    --category-other: 180 50% 55%; /* #4DD4FA */
+    
+    /* Dark Mode Financial Status */
+    --success: 142 76% 45%; /* #34D399 */
+    --success-foreground: 215 27% 15%; /* #1E293B */
+    --warning: 35 85% 55%; /* #FBBF24 */
+    --warning-foreground: 215 27% 15%; /* #1E293B */
+    --destructive: 0 84% 65%; /* #F87171 */
+    --destructive-foreground: 0 0% 100%; /* #FFFFFF */
+    
+    /* Dark Mode UI Elements */
+    --border: 215 27% 30%; /* #4B5563 */
+    --input: 215 27% 25%; /* #374151 */
+    --ring: 260 80% 50%; /* #7C3AED */
+    --popover: 215 27% 18%; /* #2D3748 */
+    --popover-foreground: 210 20% 95%; /* #F1F5F9 */
+    
+    /* Dark Mode Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-surface: linear-gradient(180deg, hsl(var(--surface)), hsl(var(--background)));
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(var(--surface)));
+    
+    /* Dark Mode Shadows */
+    --shadow-soft: 0 2px 8px -2px hsl(0 0% 0% / 0.25);
+    --shadow-medium: 0 4px 16px -4px hsl(0 0% 0% / 0.35);
+    --shadow-large: 0 8px 32px -8px hsl(0 0% 0% / 0.45);
+    --shadow-glow: 0 0 20px hsl(var(--primary) / 0.35);
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-body);
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+
+  /* Custom Scrollbar Styles */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.4);
+    border-radius: 3px;
+    transition: background-color 0.2s ease;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.6);
+  }
+
+  /* Smooth focus rings */
+  *:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+}
+
+/* Component Utilities */
+@layer components {
+  /* Gradient Text */
+  .gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Premium Hover Effects */
+  .hover-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+  }
+
+  /* Category Badge */
+  .category-badge {
+    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium;
+    background: hsl(var(--surface));
+    border: 1px solid hsl(var(--border));
+    transition: all 0.2s ease;
+  }
+
+  .category-badge:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-soft);
+  }
+}
