@@ -32,12 +32,9 @@ app.use(
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
   })
 );
-
-// Handle preflight requests explicitly
-app.options('*', cors());
 
 // Body Parser
 app.use(express.json());
