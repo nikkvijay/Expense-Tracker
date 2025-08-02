@@ -51,9 +51,10 @@ class SpeechService {
   }
 
   initializeUpload() {
-    // Configure multer for audio file uploads
+    // Configure multer for audio file uploads - use /tmp for serverless
+    const uploadDir = process.env.NODE_ENV === 'production' ? '/tmp' : 'uploads/audio/';
     this.upload = multer({
-      dest: "uploads/audio/",
+      dest: uploadDir,
       limits: {
         fileSize: 25 * 1024 * 1024, // 25MB limit (Deepgram supports larger files)
       },
