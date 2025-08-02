@@ -28,6 +28,18 @@ export const CalculatorWidget: React.FC<CalculatorWidgetProps> = ({
   const [isMinimized, setIsMinimized] = useState(false);
   const [activeTab, setActiveTab] = useState(defaultTab);
 
+  const handleCalculatorResult = (result: number) => {
+    // Handle calculator result - could be used for auto-filling expense forms
+  };
+
+  const handleConversionResult = (result: {
+    amount: number;
+    from: string;
+    to: string;
+  }) => {
+    // Handle currency conversion result
+  };
+
   if (isMinimized) {
     return (
       <Card className={`w-full max-w-sm ${className}`}>

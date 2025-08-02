@@ -122,6 +122,10 @@ export const ExpenseTracker: React.FC = () => {
     setEditingExpense(null);
   };
 
+  const handleIncomeChange = (newIncome: number) => {
+    setMonthlyIncome(newIncome);
+  };
+
   // Calculate totals
   const totalSpent = expenses.reduce((sum, expense) => sum + expense.amount, 0);
   const incomeUsed = monthlyIncome > 0 ? (totalSpent / monthlyIncome) * 100 : 0;
