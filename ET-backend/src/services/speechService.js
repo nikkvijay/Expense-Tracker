@@ -504,7 +504,7 @@ class SpeechService {
     return { valid: true };
   }
 
-  // Enhanced speech processing with context awareness
+  // Enhanced speech processing with smart financial analysis
   async processVoiceInput(audioBuffer, userContext = {}) {
     try {
       // Convert speech to text
@@ -517,15 +517,21 @@ class SpeechService {
         return speechResult;
       }
 
-      // Enhanced result with metadata
+      // Analyze transcript for financial content
+      const financialAnalysis = await this.analyzeFinancialContent(speechResult.transcript);
+
+      // Enhanced result with metadata and financial analysis
       return {
         ...speechResult,
+        financialAnalysis: financialAnalysis,
         metadata: {
           ...speechResult.metadata,
           audioProcessedAt: new Date().toISOString(),
           userLanguage: userContext.language || "en-US",
           contextProvided: Object.keys(userContext).length > 0,
           provider: "deepgram",
+          hasFinancialContent: financialAnalysis.hasFinancialContent,
+          requiresClarification: financialAnalysis.needsClarification
         },
       };
     } catch (error) {
@@ -535,6 +541,43 @@ class SpeechService {
         transcript: "",
         confidence: 0,
         message: "Failed to process voice input",
+      };
+    }
+  }
+
+  // Analyze transcript content for financial information
+  async analyzeFinancialContent(transcript) {
+    try {
+      // Import aiService here to avoid circular dependency
+      const aiService = require("./aiService");
+      
+      // Use our enhanced AI service to analyze the transcript
+      const analysis = await aiService.analyzeFinancialTransaction(transcript);
+      
+      return {
+        hasFinancialContent: analysis.confidence > 0.3,
+        transactionType: analysis.transactionType,
+        category: analysis.category,
+        confidence: analysis.confidence,
+        amount: analysis.amount,
+        needsClarification: analysis.needsClarification,
+        suggestions: analysis.suggestions,
+        reasoning: analysis.reasoning,
+        clarificationQuestions: analysis.clarificationQuestions || [],
+        contextualHints: analysis.contextualHints || []
+      };
+    } catch (error) {
+      console.error("Financial content analysis error:", error);
+      return {
+        hasFinancialContent: false,
+        transactionType: "unknown",
+        category: "other",
+        confidence: 0,
+        amount: null,
+        needsClarification: true,
+        suggestions: [],
+        reasoning: "Analysis failed",
+        clarificationQuestions: ["Could you clarify what type of transaction this is?"]
       };
     }
   }

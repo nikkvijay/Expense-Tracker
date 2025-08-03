@@ -12,47 +12,165 @@ class GeminiAIService {
     this.model = this.genAI.getGenerativeModel({ model: "gemini-pro" });
   }
 
-  // Auto-categorize expense based on description
-  async categorizeExpense(description) {
+  // Smart expense/income categorization with confidence scoring
+  async analyzeFinancialTransaction(description, type = "expense") {
     if (!this.genAI) {
-      return { category: "other", confidence: 0 };
+      return { 
+        category: "other", 
+        confidence: 0, 
+        needsClarification: true,
+        transactionType: type,
+        suggestions: []
+      };
     }
 
     try {
-      const categories = [
+      const expenseCategories = [
         "food", "transport", "entertainment", "bills", 
         "shopping", "health", "education", "other"
       ];
 
+      const incomeCategories = [
+        "salary", "freelance", "investment", "business", "other"
+      ];
+
       const prompt = `
-        Analyze this expense description and categorize it into one of these categories:
-        - food: Food, dining, groceries, restaurants, coffee
-        - transport: Gas, uber, taxi, bus, train, car maintenance
-        - entertainment: Movies, games, concerts, streaming services
-        - bills: Utilities, rent, phone, insurance, subscriptions
-        - shopping: Clothes, electronics, home goods, personal items
-        - health: Medical, pharmacy, gym, wellness
-        - education: Books, courses, school supplies
-        - other: Everything else
-
-        Expense description: "${description}"
-
-        Respond with ONLY the category name (one word, lowercase).
+        You are an intelligent financial categorization AI. Analyze this transaction description and provide detailed analysis.
+        
+        Description: "${description}"
+        
+        Your tasks:
+        1. Determine if this is an EXPENSE or INCOME transaction
+        2. If EXPENSE, categorize into: ${expenseCategories.join(", ")}
+        3. If INCOME, categorize into: ${incomeCategories.join(", ")}
+        4. Provide confidence score (0.0-1.0) based on clarity
+        5. Suggest alternative categories if confidence is low
+        6. Extract amount if mentioned (or null if not found)
+        
+        Category definitions:
+        
+        EXPENSES:
+        - food: Meals, groceries, restaurants, coffee shops, dining
+        - transport: Gas, Uber, taxi, bus, train, parking, car expenses
+        - entertainment: Movies, games, concerts, streaming, books, hobbies
+        - bills: Utilities, rent, phone, insurance, subscriptions, services
+        - shopping: Clothes, electronics, household items, personal purchases
+        - health: Medical, pharmacy, gym, wellness, healthcare
+        - education: Books, courses, school supplies, tuition
+        - other: Miscellaneous expenses
+        
+        INCOMES:
+        - salary: Regular employment, paychecks, wages
+        - freelance: Contract work, gig economy, project payments
+        - investment: Dividends, stock returns, interest, capital gains
+        - business: Sales revenue, business income, profits
+        - other: Gifts, refunds, miscellaneous income
+        
+        CONFIDENCE SCORING:
+        - 0.9-1.0: Very clear (specific keywords, unambiguous)
+        - 0.7-0.8: Clear (probable but some ambiguity)
+        - 0.5-0.6: Moderate (could fit multiple categories)
+        - 0.3-0.4: Low (vague or conflicting signals)
+        - 0.0-0.2: Very unclear (insufficient information)
+        
+        Respond in JSON format:
+        {
+          "transactionType": "expense|income",
+          "category": "category_name",
+          "confidence": 0.85,
+          "amount": 25.50,
+          "needsClarification": false,
+          "suggestions": ["alternative1", "alternative2"],
+          "reasoning": "Brief explanation of categorization",
+          "clarificationQuestions": ["What type of food was this?"],
+          "contextualHints": ["Restaurant names", "Payment methods mentioned"]
+        }
       `;
 
       const result = await this.model.generateContent(prompt);
-      const response = result.response;
-      const category = response.text().trim().toLowerCase();
-
-      // Validate the category
-      if (categories.includes(category)) {
-        return { category, confidence: 0.9 };
+      const response = result.response.text();
+      
+      try {
+        const analysis = JSON.parse(response);
+        
+        // Set clarification flag based on confidence threshold
+        analysis.needsClarification = analysis.confidence < 0.7;
+        
+        // Ensure we have required fields
+        return {
+          transactionType: analysis.transactionType || type,
+          category: analysis.category || "other",
+          confidence: analysis.confidence || 0,
+          amount: analysis.amount || null,
+          needsClarification: analysis.needsClarification,
+          suggestions: analysis.suggestions || [],
+          reasoning: analysis.reasoning || "",
+          clarificationQuestions: analysis.clarificationQuestions || [],
+          contextualHints: analysis.contextualHints || []
+        };
+        
+      } catch (parseError) {
+        console.warn("JSON parsing failed, using fallback categorization");
+        return this.fallbackCategorization(description, type);
       }
 
-      return { category: "other", confidence: 0.5 };
     } catch (error) {
-      console.error("AI categorization error:", error);
-      return { category: "other", confidence: 0 };
+      console.error("AI transaction analysis error:", error);
+      return this.fallbackCategorization(description, type);
+    }
+  }
+
+  // Legacy method for backward compatibility
+  async categorizeExpense(description) {
+    const analysis = await this.analyzeFinancialTransaction(description, "expense");
+    return {
+      category: analysis.category,
+      confidence: analysis.confidence,
+      needsClarification: analysis.needsClarification,
+      suggestions: analysis.suggestions
+    };
+  }
+
+  // Fallback categorization when AI fails
+  fallbackCategorization(description, type) {
+    const lowerDesc = description.toLowerCase();
+    
+    if (type === "expense") {
+      // Simple keyword matching for expenses
+      if (lowerDesc.includes("food") || lowerDesc.includes("lunch") || lowerDesc.includes("dinner") || 
+          lowerDesc.includes("coffee") || lowerDesc.includes("restaurant") || lowerDesc.includes("meal")) {
+        return { transactionType: "expense", category: "food", confidence: 0.6, needsClarification: true, suggestions: ["food", "other"] };
+      }
+      if (lowerDesc.includes("gas") || lowerDesc.includes("uber") || lowerDesc.includes("taxi") || 
+          lowerDesc.includes("transport") || lowerDesc.includes("bus") || lowerDesc.includes("train")) {
+        return { transactionType: "expense", category: "transport", confidence: 0.6, needsClarification: true, suggestions: ["transport", "other"] };
+      }
+      // Default for unclear expenses
+      return { 
+        transactionType: "expense", 
+        category: "other", 
+        confidence: 0.3, 
+        needsClarification: true, 
+        suggestions: ["food", "transport", "shopping", "entertainment"],
+        clarificationQuestions: ["What category does this expense belong to?"]
+      };
+    } else {
+      // Simple keyword matching for income
+      if (lowerDesc.includes("salary") || lowerDesc.includes("paycheck") || lowerDesc.includes("wage")) {
+        return { transactionType: "income", category: "salary", confidence: 0.6, needsClarification: true, suggestions: ["salary", "other"] };
+      }
+      if (lowerDesc.includes("freelance") || lowerDesc.includes("contract") || lowerDesc.includes("project")) {
+        return { transactionType: "income", category: "freelance", confidence: 0.6, needsClarification: true, suggestions: ["freelance", "other"] };
+      }
+      // Default for unclear income
+      return { 
+        transactionType: "income", 
+        category: "other", 
+        confidence: 0.3, 
+        needsClarification: true, 
+        suggestions: ["salary", "freelance", "business", "investment"],
+        clarificationQuestions: ["What type of income is this?"]
+      };
     }
   }
 

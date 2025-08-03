@@ -214,6 +214,7 @@ class ChatbotService {
     
     let response = "";
     let suggestions = [];
+    let quickActions = [];
     
     if (intentType === 'ADD_EXPENSE') {
       if (missingInfo.includes('amount')) {
@@ -222,43 +223,115 @@ class ChatbotService {
         // Smart suggestions based on category
         if (data.category === 'food') {
           suggestions = ["$5-10 for coffee/snacks", "$15-25 for lunch", "$30-50 for dinner"];
+          quickActions = [
+            { text: "$8", value: 8, category: data.category },
+            { text: "$20", value: 20, category: data.category },
+            { text: "$40", value: 40, category: data.category }
+          ];
         } else if (data.category === 'transport') {
           suggestions = ["$3-5 for bus/train", "$10-20 for taxi", "$30-50 for gas"];
+          quickActions = [
+            { text: "$5", value: 5, category: data.category },
+            { text: "$15", value: 15, category: data.category },
+            { text: "$40", value: 40, category: data.category }
+          ];
         } else if (data.category === 'entertainment') {
           suggestions = ["$10-15 for streaming", "$25-35 for movies", "$50+ for events"];
+          quickActions = [
+            { text: "$12", value: 12, category: data.category },
+            { text: "$30", value: 30, category: data.category },
+            { text: "$60", value: 60, category: data.category }
+          ];
         } else {
           suggestions = ["Under $10", "$10-50", "$50-100", "Over $100"];
+          quickActions = [
+            { text: "$10", value: 10, category: data.category },
+            { text: "$25", value: 25, category: data.category },
+            { text: "$75", value: 75, category: data.category }
+          ];
         }
       } else if (missingInfo.includes('category')) {
-        response = `I see you spent ${this.formatCurrency(data.amount, currency)}, but what category should this go under?`;
-        suggestions = ["Food & Dining", "Transportation", "Entertainment", "Bills & Utilities", "Shopping", "Health", "Education", "Other"];
+        const amount = data.amount ? this.formatCurrency(data.amount, currency) : 'some money';
+        response = `I see you spent ${amount}, but I'm not sure what category this belongs to. Here are some options:`;
+        
+        // Provide category suggestions with contextual reasoning
+        suggestions = [
+          "🍽️ Food & Dining - meals, groceries, restaurants",
+          "🚗 Transportation - gas, uber, parking, public transit", 
+          "🎬 Entertainment - movies, games, streaming, books",
+          "🏠 Bills & Utilities - rent, phone, insurance, subscriptions",
+          "🛍️ Shopping - clothes, electronics, household items",
+          "🏥 Health - medical, pharmacy, gym, wellness",
+          "📚 Education - books, courses, supplies",
+          "📦 Other - miscellaneous expenses"
+        ];
+        
+        quickActions = [
+          { text: "Food", value: "food", amount: data.amount },
+          { text: "Transport", value: "transport", amount: data.amount },
+          { text: "Shopping", value: "shopping", amount: data.amount },
+          { text: "Other", value: "other", amount: data.amount }
+        ];
       }
     } else if (intentType === 'ADD_INCOME') {
       if (missingInfo.includes('amount')) {
         response = `I understand you received some income, but could you tell me how much?`;
         suggestions = ["Under $500", "$500-1000", "$1000-3000", "$3000+"];
+        quickActions = [
+          { text: "$300", value: 300, type: "income" },
+          { text: "$1000", value: 1000, type: "income" },
+          { text: "$3000", value: 3000, type: "income" }
+        ];
       } else if (missingInfo.includes('source')) {
-        response = `I see you received ${this.formatCurrency(data.amount, currency)}. What type of income is this?`;
-        suggestions = ["Salary", "Freelance Work", "Investment Returns", "Business Income", "Other"];
+        const amount = data.amount ? this.formatCurrency(data.amount, currency) : 'some income';
+        response = `I see you received ${amount}. What type of income is this?`;
+        
+        suggestions = [
+          "💼 Salary - regular employment income",
+          "🖥️ Freelance Work - contract or project-based work",
+          "📈 Investment Returns - dividends, stock gains, interest",
+          "🏢 Business Income - sales, revenue, profits",
+          "🎁 Other - gifts, refunds, miscellaneous income"
+        ];
+        
+        quickActions = [
+          { text: "Salary", value: "salary", amount: data.amount },
+          { text: "Freelance", value: "freelance", amount: data.amount },
+          { text: "Investment", value: "investment", amount: data.amount },
+          { text: "Other", value: "other", amount: data.amount }
+        ];
       }
     }
     
     // Add contextual suggestions if available
     if (contextualInfo && contextualInfo.suggestedQuestions) {
-      response += `\n\n${contextualInfo.suggestedQuestions.join(' ')}`;
+      response += `\n\n💡 ${contextualInfo.suggestedQuestions.join(' ')}`;
+    }
+    
+    // Add reasoning if available
+    if (contextualInfo && contextualInfo.reasoning) {
+      response += `\n\n🔍 Analysis: ${contextualInfo.reasoning}`;
     }
     
     return {
       response: response,
       action: {
-        type: 'MISSING_INFO',
+        type: 'CLARIFICATION_NEEDED',
         intentType: intentType,
         missingInfo: missingInfo,
-        partialData: data
+        partialData: data,
+        confidence: intent.confidence || 0
       },
       success: false,
       suggestions: suggestions,
-      awaitingInfo: missingInfo
+      quickActions: quickActions,
+      awaitingInfo: missingInfo,
+      clarificationContext: {
+        originalMessage: originalMessage,
+        analysisConfidence: intent.confidence || 0,
+        suggestedCategories: intent.suggestions || [],
+        reasoning: contextualInfo?.reasoning || ""
+      }
     };
   }
 
@@ -490,6 +563,66 @@ Just tell me what you'd like to do in natural language!`;
     };
   }
 
+  // Handle clarification response (when user responds to our questions)
+  async handleClarificationResponse(message, clarificationContext, currency = null) {
+    const lowerMessage = message.toLowerCase();
+    
+    // If user provided a quick action response (category selection)
+    const categories = ['food', 'transport', 'entertainment', 'bills', 'shopping', 'health', 'education', 'other'];
+    const incomeTypes = ['salary', 'freelance', 'investment', 'business', 'other'];
+    
+    for (const category of categories) {
+      if (lowerMessage.includes(category.toLowerCase())) {
+        if (clarificationContext.intentType === 'ADD_EXPENSE') {
+          return this.handleAddExpense({
+            ...clarificationContext.partialData,
+            category: category
+          }, clarificationContext.originalMessage, currency);
+        }
+      }
+    }
+    
+    for (const incomeType of incomeTypes) {
+      if (lowerMessage.includes(incomeType.toLowerCase())) {
+        if (clarificationContext.intentType === 'ADD_INCOME') {
+          return this.handleAddIncome({
+            ...clarificationContext.partialData,
+            source: incomeType
+          }, clarificationContext.originalMessage, currency);
+        }
+      }
+    }
+    
+    // Extract amount if that was missing
+    const amountMatch = message.match(/\$?(\d+(?:\.\d{2})?)/);
+    if (amountMatch && clarificationContext.missingInfo.includes('amount')) {
+      const amount = parseFloat(amountMatch[1]);
+      
+      if (clarificationContext.intentType === 'ADD_EXPENSE') {
+        return this.handleAddExpense({
+          ...clarificationContext.partialData,
+          amount: amount
+        }, clarificationContext.originalMessage, currency);
+      } else if (clarificationContext.intentType === 'ADD_INCOME') {
+        return this.handleAddIncome({
+          ...clarificationContext.partialData,
+          amount: amount
+        }, clarificationContext.originalMessage, currency);
+      }
+    }
+    
+    // If we still can't determine what they want, ask again
+    return {
+      response: "I'm still not sure I understand. Could you be more specific? For example, you could say:\n• \"Food category\" or \"Transportation\"\n• \"$25\" for the amount\n• Or start over with a complete description",
+      action: {
+        type: 'CLARIFICATION_STILL_NEEDED',
+        originalContext: clarificationContext
+      },
+      success: false,
+      suggestions: clarificationContext.suggestedCategories || []
+    };
+  }
+
   // Fallback intent parsing
   basicIntentParsing(message) {
     const lowerMessage = message.toLowerCase();
@@ -503,6 +636,7 @@ Just tell me what you'd like to do in natural language!`;
       return {
         intent: 'ADD_EXPENSE',
         confidence: amount ? 0.8 : 0.3,
+        missingInfo: amount ? [] : ['amount'],
         data: {
           amount: amount,
           category: 'other',
@@ -520,6 +654,7 @@ Just tell me what you'd like to do in natural language!`;
       return {
         intent: 'ADD_INCOME',
         confidence: amount ? 0.8 : 0.3,
+        missingInfo: amount ? [] : ['amount'],
         data: {
           amount: amount,
           source: 'other',
@@ -533,6 +668,7 @@ Just tell me what you'd like to do in natural language!`;
       return {
         intent: 'VIEW_EXPENSES',
         confidence: 0.7,
+        missingInfo: [],
         data: {}
       };
     }
@@ -541,6 +677,7 @@ Just tell me what you'd like to do in natural language!`;
     return {
       intent: 'GENERAL_CHAT',
       confidence: 0.5,
+      missingInfo: [],
       data: {}
     };
   }
