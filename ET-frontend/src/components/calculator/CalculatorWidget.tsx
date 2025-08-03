@@ -138,26 +138,6 @@ export const CalculatorWidget: React.FC<CalculatorWidgetProps> = ({
                   Converter
                 </TabsTrigger>
               </TabsList>
-
-              <TabsContent value="calculator" className="mt-0">
-                <div className="space-y-4">
-                  <div className="text-center text-sm text-muted-foreground mb-4">
-                    Standard calculator with memory functions
-                  </div>
-                  <BasicCalculator onResultChange={handleCalculatorResult} />
-                </div>
-              </TabsContent>
-
-              <TabsContent value="converter" className="mt-0">
-                <div className="space-y-4">
-                  <div className="text-center text-sm text-muted-foreground mb-4">
-                    Live currency exchange rates
-                  </div>
-                  <CurrencyConverter
-                    onConversionResult={handleConversionResult}
-                  />
-                </div>
-              </TabsContent>
             </Tabs>
           ) : (
             <div className="space-y-4">
@@ -175,26 +155,6 @@ export const CalculatorWidget: React.FC<CalculatorWidgetProps> = ({
               )}
             </div>
           )}
-
-          {/* Quick Tips */}
-          <div className="mt-4 p-3 bg-secondary/30 rounded-lg">
-            <div className="text-xs font-medium text-foreground mb-2">
-              💡 Quick Tips
-            </div>
-            <div className="text-xs text-muted-foreground space-y-1">
-              {activeTab === "calculator" ? (
-                <>
-                  <div>• Use MC/MR for memory functions</div>
-                  <div>• Results can be used in expense forms</div>
-                </>
-              ) : (
-                <>
-                  <div>• Rates update automatically</div>
-                  <div>• Use quick amounts for fast conversion</div>
-                </>
-              )}
-            </div>
-          </div>
         </CardContent>
       )}
     </Card>

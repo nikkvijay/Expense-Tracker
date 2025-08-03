@@ -186,12 +186,15 @@
 
 /* Component Utilities */
 @layer components {
-  /* Gradient Text */
+  /* Gradient Text - Fixed text clipping */
   .gradient-text {
     background: var(--gradient-primary);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    line-height: 1.2;
+    padding-bottom: 0.125rem; /* 2px - prevents descender clipping */
+    display: inline-block; /* ensures padding works */
   }
 
   /* Premium Hover Effects */
@@ -215,5 +218,12 @@
   .category-badge:hover {
     transform: scale(1.05);
     box-shadow: var(--shadow-soft);
+  }
+
+  /* Fix for Tailwind bg-clip-text causing text clipping */
+  .bg-clip-text {
+    line-height: 1.2 !important;
+    padding-bottom: 0.125rem !important;
+    display: inline-block !important;
   }
 }

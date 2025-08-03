@@ -163,7 +163,7 @@ export const ExpenseTracker: React.FC = () => {
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="p-6 bg-gradient-card border-0 shadow-medium hover:shadow-large transition-shadows duration-300 animate-slide-up">
+          <Card className="p-6 bg-gradient-card border-0 shadow-medium hover:shadow-large transition-shadows duration-300">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-primary/10 rounded-xl">
                 <DollarSign className="h-6 w-6 text-primary" />
@@ -177,10 +177,7 @@ export const ExpenseTracker: React.FC = () => {
             </div>
           </Card>
 
-          <Card
-            className="p-6 bg-gradient-card border-0 shadow-medium hover:shadow-large transition-shadows duration-300 animate-slide-up"
-            style={{ animationDelay: "0.1s" }}
-          >
+          <Card className="p-6 bg-gradient-card border-0 shadow-medium hover:shadow-large transition-shadows duration-300">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-success/10 rounded-xl">
                 <Target className="h-6 w-6 text-success" />
@@ -194,10 +191,7 @@ export const ExpenseTracker: React.FC = () => {
             </div>
           </Card>
 
-          <Card
-            className="p-6 bg-gradient-card border-0 shadow-medium hover:shadow-large transition-shadows duration-300 animate-slide-up"
-            style={{ animationDelay: "0.2s" }}
-          >
+          <Card className="p-6 bg-gradient-card border-0 shadow-medium hover:shadow-large transition-shadows duration-300">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-warning/10 rounded-xl">
                 <TrendingUp className="h-6 w-6 text-warning" />
@@ -211,10 +205,7 @@ export const ExpenseTracker: React.FC = () => {
             </div>
           </Card>
 
-          <Card
-            className="p-6 bg-gradient-card border-0 shadow-medium hover:shadow-large transition-shadows duration-300 animate-slide-up"
-            style={{ animationDelay: "0.3s" }}
-          >
+          <Card className="p-6 bg-gradient-card border-0 shadow-medium hover:shadow-large transition-shadows duration-300">
             <div className="flex items-center gap-4">
               <div
                 className={`p-3 rounded-xl ${

@@ -129,7 +129,6 @@ export const BudgetTracker: React.FC<BudgetTrackerProps> = ({
               if (e.key === 'Enter') handleSaveBudget();
               if (e.key === 'Escape') handleCancelEdit();
             }}
-            autoFocus
           />
         )}
       </div>
