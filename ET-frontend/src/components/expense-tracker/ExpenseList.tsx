@@ -50,7 +50,7 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
   );
 
   return (
-    <Card className="p-6 bg-gradient-card border-0 shadow-medium">
+    <Card className="p-6 bg-gradient-card shadow-medium">
       {/* Header with Add Button */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
@@ -99,7 +99,7 @@ export const ExpenseList: React.FC<ExpenseListProps> = ({
             return (
               <div
                 key={expense.id}
-                className="group flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 bg-surface rounded-lg border border-border/50 hover:border-primary/30 hover:shadow-soft transition-all duration-200 animate-fade-in gap-3"
+                className="group flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 bg-surface rounded-lg hover:bg-primary/5 hover:shadow-soft transition-all duration-200 animate-fade-in gap-3"
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0">

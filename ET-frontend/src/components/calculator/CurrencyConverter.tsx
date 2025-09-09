@@ -257,7 +257,7 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = ({
         </div>
 
         {/* Result Display */}
-        <div className="bg-success/10 p-4 rounded-lg border border-success/20">
+        <div className="bg-success/10 p-4 rounded-lg">
           <div className="text-center">
             <div className="text-sm text-muted-foreground mb-1">
               Converted Amount

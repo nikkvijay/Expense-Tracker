@@ -4,32 +4,32 @@
 
 @layer base {
   :root {
-    /* Light Mode - Clean and Modern */
-    --background: 210 17% 98%; /* #F9FAFB */
-    --foreground: 215 27% 27%; /* #1F2A44 */
+    /* Light Mode - Brand Colors */
+    --background: 0 0% 97.6%; /* #f9f9f9 */
+    --foreground: 201 100% 7.6%; /* #0c1f25 */
     
     /* Card & Surface Colors */
     --card: 0 0% 100%; /* #FFFFFF */
-    --card-foreground: 215 27% 27%; /* #1F2A44 */
-    --surface: 210 20% 98%; /* #F3F4F6 */
+    --card-foreground: 201 100% 7.6%; /* #0c1f25 */
+    --surface: 77 46% 97.4%; /* #f8faf5 */
     --surface-elevated: 0 0% 100%; /* #FFFFFF */
     
-    /* Vibrant Primary Action Colors */
-    --primary: 260 80% 40%; /* #5B21B6 */
+    /* Brand Primary Action Colors */
+    --primary: 201 100% 7.6%; /* #0c1f25 */
     --primary-foreground: 0 0% 100%; /* #FFFFFF */
-    --primary-glow: 260 70% 50%; /* #7C3AED */
+    --primary-glow: 80 85% 56%; /* #b7ec42 */
     
     /* Secondary Actions */
-    --secondary: 210 17% 91%; /* #E5E7EB */
-    --secondary-foreground: 215 27% 27%; /* #1F2A44 */
+    --secondary: 0 0% 23.1%; /* #3b3b3b */
+    --secondary-foreground: 0 0% 100%; /* #FFFFFF */
     
     /* Muted Elements */
-    --muted: 210 17% 94%; /* #ECEFF1 */
-    --muted-foreground: 215 20% 45%; /* #64748B */
+    --muted: 77 46% 97.4%; /* #f8faf5 */
+    --muted-foreground: 0 0% 23.1%; /* #3b3b3b */
     
     /* Accent for Success States */
-    --accent: 172 66% 45%; /* #14B8A6 */
-    --accent-foreground: 0 0% 100%; /* #FFFFFF */
+    --accent: 80 85% 56%; /* #b7ec42 */
+    --accent-foreground: 201 100% 7.6%; /* #0c1f25 */
     
     /* Expense Category Colors - Vibrant & Distinct */
     --category-food: 24 80% 55%; /* #F97316 - Warm Orange */
@@ -68,40 +68,40 @@
     --shadow-glow: 0 0 20px hsl(var(--primary) / 0.25);
     
     /* Typography */
-    --font-heading: 'Inter', system-ui, sans-serif;
-    --font-body: 'Inter', system-ui, sans-serif;
+    --font-heading: 'Urbanist', system-ui, sans-serif;
+    --font-body: 'Urbanist', system-ui, sans-serif;
     
     /* Spacing & Layout */
     --radius: 0.75rem;
   }
 
   .dark {
-    /* Dark Mode - Sleek and Luxurious */
-    --background: 215 27% 15%; /* #1E293B */
-    --foreground: 210 20% 95%; /* #F1F5F9 */
+    /* Dark Mode - Brand Colors */
+    --background: 201 100% 7.6%; /* #0c1f25 */
+    --foreground: 0 0% 97.6%; /* #f9f9f9 */
     
     /* Dark Mode Card & Surface Colors */
-    --card: 215 27% 18%; /* #2D3748 */
-    --card-foreground: 210 20% 95%; /* #F1F5F9 */
-    --surface: 215 27% 20%; /* #334155 */
-    --surface-elevated: 215 27% 22%; /* #374151 */
+    --card: 0 0% 10.2%; /* #1a1a1a */
+    --card-foreground: 0 0% 97.6%; /* #f9f9f9 */
+    --surface: 0 0% 10.2%; /* #1a1a1a */
+    --surface-elevated: 0 0% 23.1%; /* #3b3b3b */
     
-    /* Vibrant Primary (Enhanced for Dark Mode) */
-    --primary: 260 80% 50%; /* #7C3AED */
-    --primary-foreground: 0 0% 100%; /* #FFFFFF */
-    --primary-glow: 260 70% 60%; /* #A78BFA */
+    /* Brand Primary (Enhanced for Dark Mode) */
+    --primary: 80 85% 56%; /* #b7ec42 */
+    --primary-foreground: 201 100% 7.6%; /* #0c1f25 */
+    --primary-glow: 80 85% 56%; /* #b7ec42 */
     
     /* Dark Mode Secondary */
-    --secondary: 215 27% 25%; /* #374151 */
-    --secondary-foreground: 210 20% 95%; /* #F1F5F9 */
+    --secondary: 0 0% 23.1%; /* #3b3b3b */
+    --secondary-foreground: 0 0% 97.6%; /* #f9f9f9 */
     
     /* Dark Mode Muted */
-    --muted: 215 27% 22%; /* #374151 */
-    --muted-foreground: 210 20% 70%; /* #94A3B8 */
+    --muted: 0 0% 23.1%; /* #3b3b3b */
+    --muted-foreground: 0 0% 97.6%; /* #f9f9f9 */
     
     /* Dark Mode Accent */
-    --accent: 172 66% 55%; /* #2DD4BF */
-    --accent-foreground: 215 27% 15%; /* #1E293B */
+    --accent: 80 85% 56%; /* #b7ec42 */
+    --accent-foreground: 201 100% 7.6%; /* #0c1f25 */
     
     /* Category Colors (Adjusted for Dark Mode) */
     --category-food: 24 80% 60%; /* #FB923C */
@@ -143,7 +143,7 @@
 
 @layer base {
   * {
-    border-color: hsl(var(--border));
+    border: none;
   }
 
   body {
@@ -211,7 +211,6 @@
   .category-badge {
     @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium;
     background: hsl(var(--surface));
-    border: 1px solid hsl(var(--border));
     transition: all 0.2s ease;
   }
 

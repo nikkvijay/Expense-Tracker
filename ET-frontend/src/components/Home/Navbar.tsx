@@ -60,7 +60,7 @@ const Navbar = () => {
       onClick={onClick || closeMenu}
       className={`flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-primary/10 hover:text-primary ${
         isActive(to)
-          ? "bg-primary/10 text-primary border border-primary/20"
+          ? "bg-primary/10 text-primary"
           : "text-foreground hover:scale-105"
       }`}
     >
@@ -70,7 +70,7 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="sticky top-0 z-50 bg-gradient-card border-b border-border/50 shadow-medium backdrop-blur-sm">
+    <nav className="sticky top-0 z-50 bg-gradient-card shadow-medium backdrop-blur-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -83,7 +83,7 @@ const Navbar = () => {
               <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
                 <Calculator className="h-5 w-5 text-primary-foreground" />
               </div>
-              <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+              <span className="text-h5 font-semibold bg-gradient-primary bg-clip-text text-transparent">
                 ExpenseTracker
               </span>
             </Link>
@@ -106,7 +106,7 @@ const Navbar = () => {
               </NavLink>
 
               {/* User Menu */}
-              <div className="flex items-center gap-2 ml-4 pl-4 border-l border-border">
+              <div className="flex items-center gap-2 ml-4 pl-4">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -156,7 +156,7 @@ const Navbar = () => {
 
         {/* Mobile Navigation Menu */}
         {isMenuOpen && (
-          <div className="md:hidden absolute top-16 left-0 right-0 bg-card border-b border-border shadow-large z-40 animate-slide-up">
+          <div className="md:hidden absolute top-16 left-0 right-0 bg-card shadow-large z-40 animate-slide-up">
             <div className="container mx-auto px-4 py-4 space-y-2">
               {isAuthenticated ? (
                 <>
@@ -192,7 +192,7 @@ const Navbar = () => {
                   </div>
 
                   {/* Logout Button */}
-                  <div className="pt-4 border-t border-border">
+                  <div className="pt-4">
                     <Button
                       variant="ghost"
                       onClick={handleLogout}

@@ -548,8 +548,14 @@ class SpeechService {
   // Analyze transcript content for financial information
   async analyzeFinancialContent(transcript) {
     try {
-      // Import aiService here to avoid circular dependency
-      const aiService = require("./aiService");
+      // Use dynamic import to avoid circular dependency
+      let aiService;
+      try {
+        aiService = require("./aiService");
+      } catch (importError) {
+        console.warn("Could not import aiService, using fallback analysis");
+        return this.fallbackFinancialAnalysis(transcript);
+      }
       
       // Use our enhanced AI service to analyze the transcript
       const analysis = await aiService.analyzeFinancialTransaction(transcript);
@@ -568,18 +574,66 @@ class SpeechService {
       };
     } catch (error) {
       console.error("Financial content analysis error:", error);
-      return {
-        hasFinancialContent: false,
-        transactionType: "unknown",
-        category: "other",
-        confidence: 0,
-        amount: null,
-        needsClarification: true,
-        suggestions: [],
-        reasoning: "Analysis failed",
-        clarificationQuestions: ["Could you clarify what type of transaction this is?"]
-      };
+      return this.fallbackFinancialAnalysis(transcript);
     }
+  }
+
+  // Fallback financial analysis when AI service is unavailable
+  fallbackFinancialAnalysis(transcript) {
+    const lowerTranscript = transcript.toLowerCase();
+    
+    // Simple keyword-based analysis
+    const expenseKeywords = ['spent', 'bought', 'paid', 'purchase', 'cost', 'expense'];
+    const incomeKeywords = ['earned', 'received', 'income', 'salary', 'paid', 'got paid'];
+    
+    // Extract amount
+    const amountMatch = transcript.match(/\$?(\d+(?:\.\d{2})?)/);
+    const amount = amountMatch ? parseFloat(amountMatch[1]) : null;
+    
+    // Determine transaction type
+    let transactionType = 'unknown';
+    let confidence = 0.3;
+    
+    const hasExpenseKeywords = expenseKeywords.some(keyword => lowerTranscript.includes(keyword));
+    const hasIncomeKeywords = incomeKeywords.some(keyword => lowerTranscript.includes(keyword));
+    
+    if (hasExpenseKeywords && !hasIncomeKeywords) {
+      transactionType = 'expense';
+      confidence = 0.6;
+    } else if (hasIncomeKeywords && !hasExpenseKeywords) {
+      transactionType = 'income';
+      confidence = 0.6;
+    }
+    
+    // Simple category detection for expenses
+    let category = 'other';
+    if (transactionType === 'expense') {
+      if (lowerTranscript.includes('food') || lowerTranscript.includes('lunch') || lowerTranscript.includes('dinner')) {
+        category = 'food';
+        confidence = 0.7;
+      } else if (lowerTranscript.includes('gas') || lowerTranscript.includes('uber') || lowerTranscript.includes('taxi')) {
+        category = 'transport';
+        confidence = 0.7;
+      }
+    } else if (transactionType === 'income') {
+      if (lowerTranscript.includes('salary') || lowerTranscript.includes('paycheck')) {
+        category = 'salary';
+        confidence = 0.7;
+      }
+    }
+    
+    return {
+      hasFinancialContent: confidence > 0.3,
+      transactionType: transactionType,
+      category: category,
+      confidence: confidence,
+      amount: amount,
+      needsClarification: confidence < 0.7,
+      suggestions: transactionType === 'expense' ? ['food', 'transport', 'other'] : ['salary', 'freelance', 'other'],
+      reasoning: "Fallback analysis based on keywords",
+      clarificationQuestions: [`What category does this ${transactionType} belong to?`],
+      contextualHints: []
+    };
   }
 
   // Get available models

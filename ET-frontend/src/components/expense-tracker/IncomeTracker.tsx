@@ -176,7 +176,7 @@ export const IncomeTracker: React.FC<IncomeTrackerProps> = ({
   const savingsRate = totalIncome > 0 ? (netAmount / totalIncome) * 100 : 0;
 
   return (
-    <Card className="p-4 sm:p-6 bg-gradient-card border-0 shadow-medium">
+    <Card className="p-4 sm:p-6 bg-gradient-card shadow-medium">
       <div className="space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -289,7 +289,7 @@ export const IncomeTracker: React.FC<IncomeTrackerProps> = ({
                 return (
                   <div
                     key={income.id}
-                    className="flex items-center justify-between p-3 bg-surface rounded-lg border border-border/50"
+                    className="flex items-center justify-between p-3 bg-surface rounded-lg"
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-lg">{source?.icon || "💰"}</span>

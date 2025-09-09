@@ -130,7 +130,7 @@ export const BasicCalculator: React.FC<BasicCalculatorProps> = ({ onResultChange
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Display */}
-        <div className="bg-secondary/30 p-4 rounded-lg border">
+        <div className="bg-secondary/30 p-4 rounded-lg">
           <div className="text-right text-2xl font-mono font-bold text-foreground truncate">
             {display}
           </div>

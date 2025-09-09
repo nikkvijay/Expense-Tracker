@@ -79,7 +79,7 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen bg-gradient-surface flex items-center justify-center p-4">
-      <Card className="w-full max-w-md bg-gradient-card border-0 shadow-large">
+      <Card className="w-full max-w-md bg-gradient-card shadow-large">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold bg-gradient-primary bg-clip-text">
             Create Account
@@ -100,8 +100,8 @@ const Signup = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={`focus:ring-primary focus:border-primary ${
-                  errors.email ? "border-destructive" : ""
+                className={`focus:ring-primary ${
+                  errors.email ? "text-destructive" : ""
                 }`}
               />
               {errors.email && (
@@ -118,8 +118,8 @@ const Signup = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={`focus:ring-primary focus:border-primary ${
-                  errors.password ? "border-destructive" : ""
+                className={`focus:ring-primary ${
+                  errors.password ? "text-destructive" : ""
                 }`}
               />
               {errors.password && (
@@ -136,8 +136,8 @@ const Signup = () => {
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className={`focus:ring-primary focus:border-primary ${
-                  errors.confirmPassword ? "border-destructive" : ""
+                className={`focus:ring-primary ${
+                  errors.confirmPassword ? "text-destructive" : ""
                 }`}
               />
               {errors.confirmPassword && (

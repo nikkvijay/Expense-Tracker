@@ -78,7 +78,7 @@ export const CategoryStats: React.FC<CategoryStatsProps> = ({ expenses, categori
   };
 
   return (
-    <Card className="p-6 bg-gradient-card border-0 shadow-medium animate-slide-up" style={{ animationDelay: '0.2s' }}>
+    <Card className="p-6 bg-gradient-card shadow-medium animate-slide-up" style={{ animationDelay: '0.2s' }}>
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-semibold text-foreground">Category Breakdown</h3>
         <span className="text-sm text-muted-foreground">
@@ -96,7 +96,7 @@ export const CategoryStats: React.FC<CategoryStatsProps> = ({ expenses, categori
           {categoryStats.map((stat, index) => (
             <div 
               key={stat.id} 
-              className="p-4 bg-surface rounded-lg border border-border/50 hover:border-primary/30 transition-all duration-200"
+              className="p-4 bg-surface rounded-lg hover:bg-primary/5 transition-all duration-200"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Category Header */}
@@ -164,7 +164,7 @@ export const CategoryStats: React.FC<CategoryStatsProps> = ({ expenses, categori
 
       {/* Summary Insights */}
       {categoryStats.length > 0 && (
-        <div className="mt-6 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+        <div className="mt-6 p-4 bg-primary/5 rounded-lg">
           <h4 className="text-sm font-semibold text-foreground mb-2">💡 Insights</h4>
           <div className="space-y-1">
             <p className="text-xs text-muted-foreground">

@@ -156,7 +156,7 @@ export const ExpenseCalendar: React.FC<ExpenseCalendarProps> = ({
     : [];
 
   return (
-    <Card className="p-4 sm:p-6 bg-gradient-card border-0 shadow-medium">
+    <Card className="p-4 sm:p-6 bg-gradient-card shadow-medium">
       <div className="space-y-6">
         {/* Calendar Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -225,9 +225,9 @@ export const ExpenseCalendar: React.FC<ExpenseCalendarProps> = ({
                   dayInfo.isCurrentMonth && handleDateClick(dayInfo.date)
                 }
                 className={`
-                  p-1 sm:p-2 min-h-[50px] sm:min-h-[60px] lg:min-h-[80px] border border-border/30 rounded-md sm:rounded-lg cursor-pointer transition-all duration-200
+                  p-1 sm:p-2 min-h-[50px] sm:min-h-[60px] lg:min-h-[80px] bg-card/50 rounded-md sm:rounded-lg cursor-pointer transition-all duration-200
                   ${dayInfo.isCurrentMonth ? "hover:bg-surface" : "opacity-50"}
-                  ${isSelected ? "bg-primary/10 border-primary" : ""}
+                  ${isSelected ? "bg-primary/20" : ""}
                   ${isToday ? "ring-1 sm:ring-2 ring-primary/50" : ""}
                 `}
               >
@@ -305,7 +305,7 @@ export const ExpenseCalendar: React.FC<ExpenseCalendarProps> = ({
 
         {/* Selected Date Details */}
         {selectedDate && (
-          <div className="border-t pt-6">
+          <div className="pt-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <h4 className="text-sm sm:text-base lg:text-lg font-semibold text-foreground">
                 {selectedDate.toLocaleDateString("en-US", {
@@ -342,7 +342,7 @@ export const ExpenseCalendar: React.FC<ExpenseCalendarProps> = ({
                   return (
                     <div
                       key={expense.id}
-                      className="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-surface rounded-lg border border-border/50 gap-3"
+                      className="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-surface rounded-lg gap-3"
                     >
                       <div className="flex items-center gap-3 flex-1 min-w-0">
                         <div
@@ -408,7 +408,7 @@ export const ExpenseCalendar: React.FC<ExpenseCalendarProps> = ({
                   );
                 })}
 
-                <div className="text-right pt-2 border-t">
+                <div className="text-right pt-2">
                   <span className="text-base font-semibold text-foreground">
                     Total:{" "}
                     {formatCurrency(

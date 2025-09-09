@@ -140,7 +140,7 @@ export const ExpenseTracker: React.FC = () => {
     return (
       <div className="min-h-screen bg-gradient-surface flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <div className="animate-pulse rounded-full h-12 w-12 bg-primary/30 mx-auto mb-4"></div>
           <p className="text-muted-foreground">Loading your expenses...</p>
         </div>
       </div>
@@ -160,10 +160,16 @@ export const ExpenseTracker: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-surface">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="container mx-auto px-4 py-8 ">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-4">
+            Expense Tracker
+          </h1>
+        </div>
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="p-6 bg-gradient-card border-0 shadow-medium hover:shadow-large transition-shadows duration-300">
+          <Card className="p-6 bg-gradient-card shadow-medium hover:shadow-large transition-shadows duration-300">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-primary/10 rounded-xl">
                 <DollarSign className="h-6 w-6 text-primary" />
@@ -177,7 +183,7 @@ export const ExpenseTracker: React.FC = () => {
             </div>
           </Card>
 
-          <Card className="p-6 bg-gradient-card border-0 shadow-medium hover:shadow-large transition-shadows duration-300">
+          <Card className="p-6 bg-gradient-card shadow-medium hover:shadow-large transition-shadows duration-300">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-success/10 rounded-xl">
                 <Target className="h-6 w-6 text-success" />
@@ -191,7 +197,7 @@ export const ExpenseTracker: React.FC = () => {
             </div>
           </Card>
 
-          <Card className="p-6 bg-gradient-card border-0 shadow-medium hover:shadow-large transition-shadows duration-300">
+          <Card className="p-6 bg-gradient-card shadow-medium hover:shadow-large transition-shadows duration-300">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-warning/10 rounded-xl">
                 <TrendingUp className="h-6 w-6 text-warning" />
@@ -205,7 +211,7 @@ export const ExpenseTracker: React.FC = () => {
             </div>
           </Card>
 
-          <Card className="p-6 bg-gradient-card border-0 shadow-medium hover:shadow-large transition-shadows duration-300">
+          <Card className="p-6 bg-gradient-card shadow-medium hover:shadow-large transition-shadows duration-300">
             <div className="flex items-center gap-4">
               <div
                 className={`p-3 rounded-xl ${

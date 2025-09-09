@@ -43,7 +43,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-gradient-surface flex items-center justify-center p-4">
-      <Card className="w-full max-w-md bg-gradient-card border-0 shadow-large">
+      <Card className="w-full max-w-md bg-gradient-card shadow-large">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold bg-gradient-primary bg-clip-text">
             Welcome Back
@@ -64,7 +64,7 @@ const Login = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="focus:ring-primary focus:border-primary"
+                className="focus:ring-primary"
               />
             </div>
             <div className="space-y-2">
@@ -77,7 +77,7 @@ const Login = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="focus:ring-primary focus:border-primary"
+                className="focus:ring-primary"
               />
             </div>
             <Button

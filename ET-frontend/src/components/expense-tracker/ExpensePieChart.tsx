@@ -29,7 +29,7 @@ export const ExpensePieChart: React.FC<ExpensePieChartProps> = ({ expenses, cate
   const PieTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-card border border-border rounded-lg p-3 shadow-medium">
+        <div className="bg-card rounded-lg p-3 shadow-medium">
           <p className="text-sm font-medium text-foreground">{payload[0].name}</p>
           <p className="text-sm text-primary">
             Amount: {formatCurrency(payload[0].value)}
@@ -44,7 +44,7 @@ export const ExpensePieChart: React.FC<ExpensePieChartProps> = ({ expenses, cate
   };
 
   return (
-    <Card className="p-4 sm:p-6 bg-gradient-card border-0 shadow-medium animate-slide-up">
+    <Card className="p-4 sm:p-6 bg-gradient-card shadow-medium animate-slide-up">
       <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4">Spending by Category</h3>
       <div className="h-48 sm:h-64">
         {categoryTotals.length > 0 ? (

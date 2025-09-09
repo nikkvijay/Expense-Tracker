@@ -39,7 +39,7 @@ export const PaymentMethodChart: React.FC<PaymentMethodChartProps> = ({ expenses
       const percentage = totalExpenses > 0 ? ((payload[0].value / totalExpenses) * 100).toFixed(1) : '0';
       
       return (
-        <div className="bg-card border border-border rounded-lg p-3 shadow-medium">
+        <div className="bg-card rounded-lg p-3 shadow-medium">
           <div className="flex items-center gap-2 mb-1">
             <span>{payload[0].payload.icon}</span>
             <p className="text-sm font-medium text-foreground">{payload[0].name}</p>
@@ -57,7 +57,7 @@ export const PaymentMethodChart: React.FC<PaymentMethodChartProps> = ({ expenses
   };
 
   return (
-    <Card className="p-4 sm:p-6 bg-gradient-card border-0 shadow-medium animate-slide-up">
+    <Card className="p-4 sm:p-6 bg-gradient-card shadow-medium animate-slide-up">
       <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4">Spending by Payment Method</h3>
       <div className="h-48 sm:h-64">
         {paymentMethodTotals.length > 0 ? (

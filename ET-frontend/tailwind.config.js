@@ -18,7 +18,52 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["Urbanist", "system-ui", "sans-serif"],
+        heading: ["Urbanist", "system-ui", "sans-serif"],
+        body: ["Urbanist", "system-ui", "sans-serif"],
+      },
+      fontSize: {
+        h1: [
+          "clamp(48px, 8vw, 80px)",
+          { lineHeight: "1.15", fontWeight: "600" },
+        ],
+        h2: [
+          "clamp(36px, 6vw, 56px)",
+          { lineHeight: "1.25", fontWeight: "600" },
+        ],
+        h3: [
+          "clamp(24px, 4vw, 32px)",
+          { lineHeight: "1.3", fontWeight: "600" },
+        ],
+        h4: [
+          "clamp(20px, 3vw, 26px)",
+          { lineHeight: "1.3", fontWeight: "600" },
+        ],
+        h5: [
+          "clamp(16px, 2.5vw, 18px)",
+          { lineHeight: "1.4", fontWeight: "600" },
+        ],
+        subtitle: [
+          "clamp(20px, 3vw, 26px)",
+          { lineHeight: "1.15", fontWeight: "600" },
+        ],
+        paragraph: ["20px", { lineHeight: "1.5", fontWeight: "400" }],
+        "paragraph-small": ["16px", { lineHeight: "1.15", fontWeight: "400" }],
+      },
       colors: {
+        // Brand Primary Colors
+        "brand-primary-1": "#0c1f25",
+        "brand-primary-2": "#3b3b3b",
+        "brand-primary-3": "#b7ec42",
+
+        // Brand Background Colors
+        "brand-light-bg-1": "#f9f9f9",
+        "brand-light-bg-2": "#f8faf5",
+        "brand-dark-bg-1": "#0c1f25",
+        "brand-dark-bg-2": "#1a1a1a",
+
+        // CSS Custom Properties (for existing components)
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -96,10 +141,7 @@ export default {
         large: "var(--shadow-large)",
         glow: "var(--shadow-glow)",
       },
-      fontFamily: {
-        heading: "var(--font-heading)",
-        body: "var(--font-body)",
-      },
+      // fontFamily already updated above
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

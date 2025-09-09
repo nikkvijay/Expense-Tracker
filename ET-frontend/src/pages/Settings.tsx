@@ -183,7 +183,7 @@ const Settings = () => {
   };
   return (
     <div className="min-h-screen bg-gradient-surface">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-4 py-8 ">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-4">
@@ -194,7 +194,7 @@ const Settings = () => {
         {/* Settings Sections */}
         <div className="space-y-6">
           {/* Profile Settings */}
-          <Card className="bg-gradient-card border-0 shadow-medium">
+          <Card className="bg-gradient-card shadow-medium">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <User className="h-5 w-5 text-primary" />
@@ -358,7 +358,7 @@ const Settings = () => {
           </Card>
 
           {/* Notification Settings */}
-          <Card className="bg-gradient-card border-0 shadow-medium">
+          <Card className="bg-gradient-card shadow-medium">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Bell className="h-5 w-5 text-primary" />
@@ -395,7 +395,7 @@ const Settings = () => {
           </Card>
 
           {/* Appearance Settings */}
-          <Card className="bg-gradient-card border-0 shadow-medium">
+          <Card className="bg-gradient-card shadow-medium">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Palette className="h-5 w-5 text-primary" />
@@ -466,7 +466,7 @@ const Settings = () => {
           </Card>
 
           {/* Data & Privacy */}
-          <Card className="bg-gradient-card border-0 shadow-medium">
+          <Card className="bg-gradient-card shadow-medium">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Shield className="h-5 w-5 text-primary" />
@@ -521,7 +521,7 @@ const Settings = () => {
         </div>
 
         {/* Info Card */}
-        <Card className="bg-gradient-card border-0 shadow-medium">
+        <Card className="bg-gradient-card shadow-medium">
           <CardContent className="pt-6">
             <div className="text-center text-muted-foreground">
               <p className="text-sm">

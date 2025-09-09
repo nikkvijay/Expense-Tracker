@@ -69,7 +69,7 @@ export const BudgetTracker: React.FC<BudgetTrackerProps> = ({
   };
 
   return (
-    <Card className="p-6 bg-gradient-card border-0 shadow-medium animate-slide-up">
+    <Card className="p-6 bg-gradient-card shadow-medium animate-slide-up">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-semibold text-foreground">Monthly Budget</h3>
         <div className="flex items-center gap-2">
@@ -172,7 +172,7 @@ export const BudgetTracker: React.FC<BudgetTrackerProps> = ({
 
       {/* Budget Tips */}
       {budgetUsed > 80 && (
-        <div className="mt-4 p-3 bg-warning/10 border border-warning/20 rounded-lg">
+        <div className="mt-4 p-3 bg-warning/10 rounded-lg">
           <p className="text-sm text-warning-foreground">
             {isOverBudget 
               ? '💡 Consider reviewing your expenses and adjusting your budget for next month.'

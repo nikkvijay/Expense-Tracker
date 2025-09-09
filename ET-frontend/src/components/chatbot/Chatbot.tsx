@@ -373,8 +373,8 @@ export const Chatbot: React.FC<ChatbotProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-full max-w-2xl h-[80vh] flex flex-col p-0 bg-card border-0 shadow-large [&>button]:hidden">
-        <DialogHeader className="p-4 pb-2 border-b border-border/50">
+      <DialogContent className="w-full  h-[80vh] flex flex-col p-0 bg-card shadow-large [&>button]:hidden">
+        <DialogHeader className="p-4 pb-2">
           <div className="flex items-center justify-between">
             <DialogTitle className="flex items-center gap-2 text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
               <Bot className="h-6 w-6 text-primary" />
@@ -411,7 +411,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({
 
         {/* Help Panel */}
         {showHelp && capabilities && (
-          <div className="p-4 bg-surface border-b border-border/50">
+          <div className="p-4 bg-surface">
             <h4 className="font-semibold mb-2 text-foreground">
               What I can help you with:
             </h4>
@@ -442,7 +442,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({
                   </div>
                 </div>
                 <div className="flex-1">
-                  <Card className="bg-surface border-0 shadow-sm">
+                  <Card className="bg-surface shadow-sm">
                     <CardContent className="p-3">
                       <p className="text-sm text-foreground whitespace-pre-line">
                         {formatMessage(getWelcomeMessage())}
@@ -459,7 +459,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({
                 {/* User Message */}
                 <div className="flex gap-3 justify-end">
                   <div className="flex-1 max-w-[80%]">
-                    <Card className="bg-primary text-primary-foreground border-0 shadow-sm">
+                    <Card className="bg-primary text-primary-foreground shadow-sm">
                       <CardContent className="p-3">
                         <p className="text-sm">{message.userMessage}</p>
                       </CardContent>
@@ -494,7 +494,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({
                     </div>
                     <div className="flex-1">
                       <Card
-                        className={`border-0 shadow-sm ${
+                        className={`shadow-sm ${
                           message.success ? "bg-surface" : "bg-destructive/5"
                         }`}
                       >
@@ -519,7 +519,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({
                   </div>
                 </div>
                 <div className="flex-1">
-                  <Card className="bg-surface border-0 shadow-sm">
+                  <Card className="bg-surface shadow-sm">
                     <CardContent className="p-3">
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <div className="flex gap-1">
@@ -546,10 +546,10 @@ export const Chatbot: React.FC<ChatbotProps> = ({
         </div>
 
         {/* Input Area */}
-        <div className="p-4 border-t border-border/50">
+        <div className="p-4">
           {/* Recording Status */}
           {isRecording && (
-            <div className="mb-4 p-3 bg-primary/10 border border-primary/20 rounded-lg">
+            <div className="mb-4 p-3 bg-primary/10 rounded-lg">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
@@ -587,7 +587,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({
                   isVoiceAvailable ? " or click mic to speak" : ""
                 }... (e.g., 'I spent ${formatCurrency(25)} on lunch')`}
                 disabled={isLoading || isRecording}
-                className={`focus:ring-primary focus:border-primary ${
+                className={`focus:ring-primary ${
                   isVoiceAvailable ? "pr-12" : ""
                 }`}
               />

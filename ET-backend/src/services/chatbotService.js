@@ -59,103 +59,113 @@ class ChatbotService {
 
   // Analyze user intent using Gemini AI with enhanced intelligence
   async analyzeIntent(message) {
-    const prompt = `
-      You are an advanced AI financial assistant. Analyze this user message and determine the intent with high intelligence.
-      
-      User message: "${message}"
-      
-      Available intents:
-      1. ADD_EXPENSE - Adding a new expense (e.g., "I spent $20 on lunch", "Add expense for coffee $5", "bought groceries for 50 dollars")
-      2. ADD_INCOME - Adding income (e.g., "I got paid $3000", "Add salary income", "received freelance payment")
-      3. VIEW_EXPENSES - Viewing expenses (e.g., "Show my expenses", "What did I spend this month", "list my transactions")
-      4. VIEW_ANALYTICS - Getting insights (e.g., "Analyze my spending", "Show spending breakdown", "how am I doing financially")
-      5. BUDGET_HELP - Budget related (e.g., "Help me set a budget", "Budget recommendations", "how much should I spend")
-      6. DELETE_EXPENSE - Remove expense (e.g., "Delete my last expense", "Remove coffee expense", "cancel that transaction")
-      7. GENERAL_CHAT - General conversation, greetings, or unclear intent
-      
-      SMART EXTRACTION RULES:
-      
-      For expenses - be intelligent about:
-      - Amount: Extract from various formats ($20, 20 dollars, twenty bucks, 20.50, etc.)
-      - Category detection based on context:
-        * Food: restaurants, groceries, lunch, dinner, coffee, pizza, McDonald's, Starbucks, etc.
-        * Transport: gas, uber, taxi, bus, train, parking, car repair, etc.
-        * Entertainment: movies, games, Netflix, concerts, streaming, books, etc.
-        * Bills: utilities, rent, phone, insurance, internet, electricity, etc.
-        * Shopping: clothes, Amazon, mall, shoes, electronics, etc.
-        * Health: doctor, pharmacy, gym, medicine, hospital, etc.
-        * Education: books, courses, school, tuition, etc.
-        * Other: anything else
-      - Description: Extract main item/service mentioned
-      - Payment method: card (default), cash, account, digital wallet, etc.
-      - Date: today (default), yesterday, last week, specific dates
-      
-      For income - detect:
-      - Amount: same intelligent extraction as expenses
-      - Source types:
-        * Salary: regular job, paycheck, monthly salary, etc.
-        * Freelance: project payment, contract work, side job, etc.
-        * Investment: dividends, returns, stocks, crypto, etc.
-        * Business: sales, revenue, business income, etc.
-        * Other: gifts, refunds, misc income
-      - Recurring patterns: monthly salary, weekly pay, annual bonus, etc.
-      
-      MISSING INFORMATION DETECTION:
-      - If amount is missing but intent is clear, set missingInfo: ["amount"]
-      - If category unclear for expense, set missingInfo: ["category"]
-      - If income source unclear, set missingInfo: ["source"]
-      
-      CONFIDENCE SCORING:
-      - 0.9+: Clear intent with all required info
-      - 0.7-0.8: Clear intent but missing some info
-      - 0.5-0.6: Probable intent but ambiguous
-      - Below 0.5: Unclear intent
-      
-      Respond in JSON format:
-      {
-        "intent": "ADD_EXPENSE",
-        "confidence": 0.9,
-        "missingInfo": [],
-        "data": {
-          "amount": 20,
-          "category": "food",
-          "description": "lunch at McDonald's",
-          "paymentMethod": "card",
-          "date": null
-        },
-        "contextualInfo": {
-          "brandMentioned": "McDonald's",
-          "suggestedQuestions": [],
-          "alternatives": []
-        }
-      }
-      
-      If information is missing, include helpful questions:
-      {
-        "intent": "ADD_EXPENSE",
-        "confidence": 0.7,
-        "missingInfo": ["amount"],
-        "data": {
-          "amount": null,
-          "category": "food",
-          "description": "lunch",
-          "paymentMethod": "card",
-          "date": null
-        },
-        "contextualInfo": {
-          "suggestedQuestions": ["How much did you spend on lunch?"],
-          "alternatives": ["Was it around $10-15 for a typical lunch?"]
-        }
-      }
-    `;
+    if (!this.genAI) {
+      console.warn("Gemini AI not available, using basic parsing");
+      return this.basicIntentParsing(message);
+    }
 
-    const result = await this.model.generateContent(prompt);
-    const response = result.response.text();
-    
     try {
-      return JSON.parse(response);
-    } catch (parseError) {
-      // Fallback to basic parsing if JSON fails
+      const prompt = `
+        You are an advanced AI financial assistant. Analyze this user message and determine the intent with high intelligence.
+        
+        User message: "${message}"
+        
+        Available intents:
+        1. ADD_EXPENSE - Adding a new expense (e.g., "I spent $20 on lunch", "Add expense for coffee $5", "bought groceries for 50 dollars")
+        2. ADD_INCOME - Adding income (e.g., "I got paid $3000", "Add salary income", "received freelance payment")
+        3. VIEW_EXPENSES - Viewing expenses (e.g., "Show my expenses", "What did I spend this month", "list my transactions")
+        4. VIEW_ANALYTICS - Getting insights (e.g., "Analyze my spending", "Show spending breakdown", "how am I doing financially")
+        5. BUDGET_HELP - Budget related (e.g., "Help me set a budget", "Budget recommendations", "how much should I spend")
+        6. DELETE_EXPENSE - Remove expense (e.g., "Delete my last expense", "Remove coffee expense", "cancel that transaction")
+        7. GENERAL_CHAT - General conversation, greetings, or unclear intent
+        
+        SMART EXTRACTION RULES:
+        
+        For expenses - be intelligent about:
+        - Amount: Extract from various formats ($20, 20 dollars, twenty bucks, 20.50, etc.)
+        - Category detection based on context:
+          * Food: restaurants, groceries, lunch, dinner, coffee, pizza, McDonald's, Starbucks, etc.
+          * Transport: gas, uber, taxi, bus, train, parking, car repair, etc.
+          * Entertainment: movies, games, Netflix, concerts, streaming, books, etc.
+          * Bills: utilities, rent, phone, insurance, internet, electricity, etc.
+          * Shopping: clothes, Amazon, mall, shoes, electronics, etc.
+          * Health: doctor, pharmacy, gym, medicine, hospital, etc.
+          * Education: books, courses, school, tuition, etc.
+          * Other: anything else
+        - Description: Extract main item/service mentioned
+        - Payment method: card (default), cash, account, digital wallet, etc.
+        - Date: today (default), yesterday, last week, specific dates
+        
+        For income - detect:
+        - Amount: same intelligent extraction as expenses
+        - Source types:
+          * Salary: regular job, paycheck, monthly salary, etc.
+          * Freelance: project payment, contract work, side job, etc.
+          * Investment: dividends, returns, stocks, crypto, etc.
+          * Business: sales, revenue, business income, etc.
+          * Other: gifts, refunds, misc income
+        - Recurring patterns: monthly salary, weekly pay, annual bonus, etc.
+        
+        MISSING INFORMATION DETECTION:
+        - If amount is missing but intent is clear, set missingInfo: ["amount"]
+        - If category unclear for expense, set missingInfo: ["category"]
+        - If income source unclear, set missingInfo: ["source"]
+        
+        CONFIDENCE SCORING:
+        - 0.9+: Clear intent with all required info
+        - 0.7-0.8: Clear intent but missing some info
+        - 0.5-0.6: Probable intent but ambiguous
+        - Below 0.5: Unclear intent
+        
+        Respond in JSON format:
+        {
+          "intent": "ADD_EXPENSE",
+          "confidence": 0.9,
+          "missingInfo": [],
+          "data": {
+            "amount": 20,
+            "category": "food",
+            "description": "lunch at McDonald's",
+            "paymentMethod": "card",
+            "date": null
+          },
+          "contextualInfo": {
+            "brandMentioned": "McDonald's",
+            "suggestedQuestions": [],
+            "alternatives": []
+          }
+        }
+        
+        If information is missing, include helpful questions:
+        {
+          "intent": "ADD_EXPENSE",
+          "confidence": 0.7,
+          "missingInfo": ["amount"],
+          "data": {
+            "amount": null,
+            "category": "food",
+            "description": "lunch",
+            "paymentMethod": "card",
+            "date": null
+          },
+          "contextualInfo": {
+            "suggestedQuestions": ["How much did you spend on lunch?"],
+            "alternatives": ["Was it around $10-15 for a typical lunch?"]
+          }
+        }
+      `;
+
+      const result = await this.model.generateContent(prompt);
+      const response = result.response.text();
+      
+      try {
+        return JSON.parse(response);
+      } catch (parseError) {
+        console.warn("Failed to parse AI response as JSON, using fallback");
+        return this.basicIntentParsing(message);
+      }
+    } catch (error) {
+      console.error("AI intent analysis failed:", error);
       return this.basicIntentParsing(message);
     }
   }

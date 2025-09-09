@@ -146,7 +146,7 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="mx-4 w-full max-w-md sm:mx-auto bg-card border-0 shadow-large">
+      <DialogContent className="mx-4 w-full max-w-md sm:mx-auto bg-card shadow-large">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
             {editingExpense ? 'Edit Expense' : 'Add New Expense'}
@@ -171,8 +171,8 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
                   setErrors(prev => ({ ...prev, amount: '' }));
                 }
               }}
-              className={`text-lg font-semibold focus:ring-primary focus:border-primary transition-colors ${
-                errors.amount ? 'border-destructive' : ''
+              className={`text-lg font-semibold focus:ring-primary transition-colors ${
+                errors.amount ? 'text-destructive' : ''
               }`}
               disabled={loading}
               required
@@ -196,8 +196,8 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
                   setErrors(prev => ({ ...prev, description: '' }));
                 }
               }}
-              className={`resize-none focus:ring-primary focus:border-primary transition-colors ${
-                errors.description ? 'border-destructive' : ''
+              className={`resize-none focus:ring-primary transition-colors ${
+                errors.description ? 'text-destructive' : ''
               }`}
               rows={3}
               disabled={loading}
@@ -224,8 +224,8 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
               disabled={loading}
               required
             >
-              <SelectTrigger className={`focus:ring-primary focus:border-primary transition-colors ${
-                errors.category ? 'border-destructive' : ''
+              <SelectTrigger className={`focus:ring-primary transition-colors ${
+                errors.category ? 'text-destructive' : ''
               }`}>
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
@@ -263,7 +263,7 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
               disabled={loading}
               required
             >
-              <SelectTrigger className="focus:ring-primary focus:border-primary transition-colors">
+              <SelectTrigger className="focus:ring-primary transition-colors">
                 <SelectValue placeholder="Select payment method" />
               </SelectTrigger>
               <SelectContent>
@@ -310,8 +310,8 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
                   setErrors(prev => ({ ...prev, date: '' }));
                 }
               }}
-              className={`focus:ring-primary focus:border-primary transition-colors ${
-                errors.date ? 'border-destructive' : ''
+              className={`focus:ring-primary transition-colors ${
+                errors.date ? 'text-destructive' : ''
               }`}
               disabled={loading}
               required
@@ -338,7 +338,7 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
             >
               {loading ? (
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <div className="w-4 h-4 bg-white/30 rounded-full animate-pulse" />
                   {editingExpense ? 'Updating...' : 'Adding...'}
                 </div>
               ) : (
