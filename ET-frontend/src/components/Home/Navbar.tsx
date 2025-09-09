@@ -13,16 +13,21 @@ import {
 } from "lucide-react";
 import { logout } from "@/api";
 import { toast } from "sonner";
+import { useUser } from "@/contexts/UserContext";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import Logo from "@/components/ui/logo";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const isAuthenticated = !!localStorage.getItem("token");
+  const { user, getUserDisplayName, setUser } = useUser();
 
   const handleLogout = async () => {
     try {
       logout();
+      setUser(null); // Clear user context
       toast.success("Logged out successfully");
       navigate("/login");
       setIsMenuOpen(false);
@@ -77,19 +82,14 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link
               to={isAuthenticated ? "/dashboard" : "/"}
-              className="flex items-center gap-3 hover:scale-105 transition-transform duration-200"
+              className="hover:scale-105 transition-transform duration-200"
               onClick={closeMenu}
             >
-              <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-                <Calculator className="h-5 w-5 text-primary-foreground" />
-              </div>
-              <span className="text-h5 font-semibold bg-gradient-primary bg-clip-text text-transparent">
-                ExpenseTracker
-              </span>
+              <Logo variant="horizontal" size="lg" currency="$" />
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation */}   
           {isAuthenticated && (
             <div className="hidden md:flex items-center space-x-2">
               <NavLink to="/dashboard" icon={Home}>
@@ -162,15 +162,31 @@ const Navbar = () => {
                 <>
                   {/* User Info */}
                   <div className="flex items-center gap-3 px-4 py-3 bg-surface rounded-lg mb-4">
-                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                      <User className="h-4 w-4 text-primary" />
-                    </div>
+                    <Avatar className="h-10 w-10">
+                      <AvatarFallback className="text-sm font-semibold bg-primary/10 text-primary">
+                        {user?.firstName && user?.lastName
+                          ? `${user.firstName.charAt(0)}${user.lastName.charAt(
+                              0
+                            )}`.toUpperCase()
+                          : user?.fullName
+                          ? user.fullName.split(" ").length > 1
+                            ? `${user.fullName
+                                .split(" ")[0]
+                                .charAt(0)}${user.fullName
+                                .split(" ")
+                                [user.fullName.split(" ").length - 1].charAt(
+                                  0
+                                )}`.toUpperCase()
+                            : user.fullName.charAt(0).toUpperCase()
+                          : user?.email?.charAt(0).toUpperCase() || "U"}
+                      </AvatarFallback>
+                    </Avatar>
                     <div>
                       <p className="text-sm font-medium text-foreground">
-                        User
+                        {getUserDisplayName()}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Welcome back!
+                        {user?.email || "Welcome back!"}
                       </p>
                     </div>
                   </div>

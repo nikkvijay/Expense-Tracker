@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
 import { signup } from "@/api";
+import { useUser } from "@/contexts/UserContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,6 +21,7 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const navigate = useNavigate();
+  const { setUser } = useUser();
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
@@ -64,6 +66,7 @@ const Signup = () => {
       if (response.token) {
         localStorage.setItem("token", response.token);
         localStorage.setItem("userId", response.userId);
+        setUser(response); // Update user context
         toast.success("Account created successfully");
         navigate("/expense-tracker");
       } else {

@@ -9,6 +9,16 @@ export interface User {
   email: string;
   token: string;
   userId: string;
+  // Extended profile fields (optional for backward compatibility)
+  firstName?: string;
+  lastName?: string;
+  fullName?: string;
+  avatar?: string;
+  phone?: string;
+  dateOfBirth?: string;
+  bio?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Expense {
@@ -66,6 +76,17 @@ export interface ApiError {
   status?: number;
 }
 
+export interface UserProfileUpdate {
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  fullName?: string;
+  phone?: string;
+  dateOfBirth?: string;
+  bio?: string;
+  avatar?: string;
+}
+
 // Helper functions
 const getAuthHeaders = () => ({
   headers: { 
@@ -115,7 +136,7 @@ export const signup = async (credentials: { email: string; password: string }): 
 };
 
 // Profile API calls
-export const updateProfile = async (data: { email: string }): Promise<User> => {
+export const updateProfile = async (data: UserProfileUpdate): Promise<User> => {
   try {
     const response: AxiosResponse<{ success: boolean; data: User }> = await axios.put(
       `${API_URL}/auth/profile`,

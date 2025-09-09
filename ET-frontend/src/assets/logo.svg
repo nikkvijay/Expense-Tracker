@@ -1,0 +1,38 @@
+<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient definitions -->
+    <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c1f25"/>
+      <stop offset="100%" stop-color="#3b3b3b"/>
+    </linearGradient>
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b7ec42"/>
+      <stop offset="100%" stop-color="#9dd632"/>
+    </linearGradient>
+    <!-- Drop shadow filter -->
+    <filter id="dropShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#0c1f25" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="30" cy="30" r="26" fill="url(#primaryGradient)" filter="url(#dropShadow)"/>
+  
+  <!-- Expense tracking icon elements -->
+  <!-- Wallet/Card shape -->
+  <rect x="20" y="22" width="20" height="12" rx="2" fill="url(#accentGradient)"/>
+  
+  <!-- Money/Dollar symbol -->
+  <text x="30" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0c1f25">$</text>
+  
+  <!-- Tracking lines (representing analytics) -->
+  <path d="M42 20 L50 16 L50 18 L44 20.5 L50 23 L50 25 Z" fill="url(#accentGradient)" opacity="0.8"/>
+  <path d="M42 28 L48 26 L48 27.5 L44.5 28.5 L48 29.5 L48 31 Z" fill="url(#accentGradient)" opacity="0.6"/>
+  <path d="M42 36 L46 35 L46 36 L44 36.5 L46 37 L46 38 Z" fill="url(#accentGradient)" opacity="0.4"/>
+  
+  <!-- App name -->
+  <text x="70" y="25" font-family="'Urbanist', Arial, sans-serif" font-size="18" font-weight="600" fill="#0c1f25">Expenzo</text>
+  
+  <!-- Tagline -->
+  <text x="70" y="40" font-family="'Urbanist', Arial, sans-serif" font-size="10" font-weight="400" fill="#3b3b3b" opacity="0.8">Smart Finance</text>
+</svg>

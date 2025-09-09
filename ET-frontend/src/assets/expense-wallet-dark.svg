@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="Expense wallet icon (dark)">
+  <defs>
+    <linearGradient id="g-currency_dark" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#b7ec42"/>
+      <stop offset="1" stop-color="#9dd632"/>
+    </linearGradient>
+
+    <filter id="f-shadow_dark" x="-50%" y="-50%" width="200%" height="200%">
+      <feOffset dx="0" dy="3" result="off"/>
+      <feGaussianBlur in="off" stdDeviation="5" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.35" result="shadow"/>
+      <feBlend in="SourceGraphic" in2="shadow" mode="normal"/>
+    </filter>
+
+    <linearGradient id="g-wallet_light" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#f7f9f8"/>
+      <stop offset="1" stop-color="#e6ece9"/>
+    </linearGradient>
+
+    <filter id="f-currency-shadow_dark" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1.2" flood-color="#081213" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+
+  <!-- Transparent background so it sits on a dark page -->
+  <rect width="160" height="160" fill="none"/>
+
+  <!-- Wallet group -->
+  <g filter="url(#f-shadow_dark)" transform="translate(12,24)">
+    <!-- Main wallet body (light) -->
+    <rect x="0" y="16" rx="14" ry="14" width="136" height="84" fill="url(#g-wallet_light)" stroke="#d8e6e0" stroke-width="1"/>
+
+    <!-- Flap -->
+    <path d="M0 24 C8 8, 128 8, 136 24 L136 36 C128 20, 8 20, 0 36 Z" fill="#fbfdfc"/>
+
+    <!-- Stitching/dashed -->
+    <path d="M8 96 H128" fill="none" stroke="#c9d8d3" stroke-width="1.4" stroke-dasharray="3 4" stroke-linecap="round" opacity="0.9"/>
+
+    <!-- Card peek -->
+    <rect x="16" y="36" rx="6" ry="6" width="56" height="36" fill="#ffffff" stroke="#e7efeb" stroke-width="0.8" opacity="0.95"/>
+    <rect x="26" y="44" rx="4" ry="4" width="46" height="30" fill="#f6fbf9" opacity="0.95"/>
+
+    <!-- Coins peeking -->
+    <g transform="translate(100,46)">
+      <circle cx="12" cy="8" r="10" fill="none" stroke="#c1d6b4" stroke-width="1.6"/>
+      <circle cx="22" cy="18" r="8" fill="none" stroke="#b0cb9f" stroke-width="1.6"/>
+    </g>
+
+    <!-- Clasp -->
+    <rect x="112" y="30" rx="5" ry="5" width="12" height="14" fill="#f2f7f5" stroke="#d3e6da" stroke-width="0.8"/>
+
+    <!-- Flap gloss -->
+    <path d="M6 28 Q68 12,130 28" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.08" stroke-linecap="round"/>
+
+    <!-- Currency symbol -->
+    <g transform="translate(40,62)">
+      <text id="currency" x="26" y="6" text-anchor="middle" font-family="Urbanist, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-weight="700" font-size="36" fill="url(#g-currency_dark)" filter="url(#f-currency-shadow_dark)">$</text>
+    </g>
+  </g>
+</svg>

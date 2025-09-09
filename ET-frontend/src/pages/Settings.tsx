@@ -38,9 +38,10 @@ import {
 } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useCurrency, CURRENCIES } from "@/contexts/CurrencyContext";
+import { useUser } from "@/contexts/UserContext";
+import { ProfileEditDialog } from "@/components/user/ProfileEditDialog";
 import {
   getExpenses,
-  getCurrentUser,
   updateProfile,
   changePassword,
 } from "@/api";
@@ -50,13 +51,9 @@ import { toast } from "sonner";
 const Settings = () => {
   const { theme, toggleTheme } = useTheme();
   const { currency, setCurrency } = useCurrency();
+  const { user, getUserDisplayName, refreshUser } = useUser();
   const [isExporting, setIsExporting] = useState(false);
-  const [user, setUser] = useState<{ email: string; userId: string } | null>(
-    null
-  );
-  const [isEditingEmail, setIsEditingEmail] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
-  const [emailForm, setEmailForm] = useState({ email: "" });
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: "",
     newPassword: "",
@@ -64,23 +61,7 @@ const Settings = () => {
   });
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userData = await getCurrentUser();
-        setUser(userData);
-        setEmailForm({ email: userData.email });
-      } catch (error) {
-        console.error("Failed to fetch user data:", error);
-        // Fallback to localStorage if API fails
-        const email = localStorage.getItem("userEmail") || "user@example.com";
-        const userId = localStorage.getItem("userId") || "";
-        setUser({ email, userId });
-        setEmailForm({ email });
-      }
-    };
-    fetchUser();
-  }, []);
+  // User profile is now managed by ProfileEditDialog
 
   const handleExportData = async (format: "csv" | "json") => {
     setIsExporting(true);
@@ -112,25 +93,7 @@ const Settings = () => {
     }
   };
 
-  const handleUpdateEmail = async () => {
-    if (!emailForm.email.trim()) {
-      toast.error("Please enter a valid email");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const updatedUser = await updateProfile({ email: emailForm.email });
-      setUser(updatedUser);
-      setIsEditingEmail(false);
-      toast.success("Email updated successfully");
-    } catch (error) {
-      console.error("Failed to update email:", error);
-      toast.error("Failed to update email. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  // handleUpdateEmail removed - now handled by ProfileEditDialog
 
   const handleChangePassword = async () => {
     if (!passwordForm.currentPassword || !passwordForm.newPassword) {
@@ -207,55 +170,41 @@ const Settings = () => {
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
+                  <p className="font-medium text-foreground">Display Name</p>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    {getUserDisplayName()}
+                  </p>
                   <p className="font-medium text-foreground">Email Address</p>
                   <p className="text-sm text-muted-foreground mb-2">
                     {user?.email || "Loading..."}
                   </p>
+                  {user?.phone && (
+                    <>
+                      <p className="font-medium text-foreground">Phone</p>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        {user.phone}
+                      </p>
+                    </>
+                  )}
+                  {user?.bio && (
+                    <>
+                      <p className="font-medium text-foreground">Bio</p>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        {user.bio}
+                      </p>
+                    </>
+                  )}
                 </div>
-                <Dialog open={isEditingEmail} onOpenChange={setIsEditingEmail}>
-                  <DialogTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="flex items-center gap-2"
-                    >
-                      <Edit2 className="h-3 w-3" />
-                      Edit
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-md">
-                    <DialogHeader>
-                      <DialogTitle>Update Email Address</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4">
-                      <div>
-                        <Label htmlFor="email">New Email Address</Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          value={emailForm.email}
-                          onChange={(e) =>
-                            setEmailForm({ email: e.target.value })
-                          }
-                          placeholder="Enter new email"
-                          disabled={loading}
-                        />
-                      </div>
-                      <div className="flex gap-2 justify-end">
-                        <Button
-                          variant="outline"
-                          onClick={() => setIsEditingEmail(false)}
-                          disabled={loading}
-                        >
-                          Cancel
-                        </Button>
-                        <Button onClick={handleUpdateEmail} disabled={loading}>
-                          {loading ? "Updating..." : "Update Email"}
-                        </Button>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                <ProfileEditDialog>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex items-center gap-2"
+                  >
+                    <Edit2 className="h-3 w-3" />
+                    Edit Profile
+                  </Button>
+                </ProfileEditDialog>
               </div>
               <div className="flex items-center justify-between">
                 <div>

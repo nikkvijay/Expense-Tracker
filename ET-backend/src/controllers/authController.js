@@ -19,7 +19,19 @@ exports.signup = async (req, res, next) => {
 
     res.status(201).json({
       success: true,
-      data: { userId: user._id, email: user.email, token },
+      data: { 
+        id: user._id,
+        userId: user._id, 
+        email: user.email, 
+        firstName: user.firstName,
+        lastName: user.lastName,
+        fullName: user.fullName,
+        phone: user.phone,
+        dateOfBirth: user.dateOfBirth ? user.dateOfBirth.toISOString() : null,
+        bio: user.bio,
+        avatar: user.avatar,
+        token 
+      },
     });
   } catch (error) {
     next(new ErrorResponse("Signup failed", 500));
@@ -50,7 +62,19 @@ exports.login = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data: { userId: user._id, email: user.email, token },
+      data: { 
+        id: user._id,
+        userId: user._id, 
+        email: user.email, 
+        firstName: user.firstName,
+        lastName: user.lastName,
+        fullName: user.fullName,
+        phone: user.phone,
+        dateOfBirth: user.dateOfBirth ? user.dateOfBirth.toISOString() : null,
+        bio: user.bio,
+        avatar: user.avatar,
+        token 
+      },
     });
   } catch (error) {
     next(new ErrorResponse("Login failed", 500));
@@ -64,9 +88,25 @@ exports.getProfile = async (req, res, next) => {
       return next(new ErrorResponse("User not found", 404));
     }
 
+    // Return all profile fields except password
+    const userData = {
+      id: user._id,
+      userId: user._id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      fullName: user.fullName,
+      phone: user.phone,
+      dateOfBirth: user.dateOfBirth ? user.dateOfBirth.toISOString() : null,
+      bio: user.bio,
+      avatar: user.avatar,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
+
     res.status(200).json({
       success: true,
-      data: { userId: user._id, email: user.email },
+      data: userData,
     });
   } catch (error) {
     next(new ErrorResponse("Failed to get profile", 500));
@@ -74,7 +114,16 @@ exports.getProfile = async (req, res, next) => {
 };
 
 exports.updateProfile = async (req, res, next) => {
-  const { email } = req.body;
+  const { 
+    email, 
+    firstName, 
+    lastName, 
+    fullName, 
+    phone, 
+    dateOfBirth, 
+    bio, 
+    avatar 
+  } = req.body;
 
   if (!email) {
     return next(new ErrorResponse("Email is required", 400));
@@ -87,9 +136,23 @@ exports.updateProfile = async (req, res, next) => {
       return next(new ErrorResponse("Email already in use", 400));
     }
 
+    // Prepare update data - only include provided fields
+    const updateData = { email };
+    
+    if (firstName !== undefined) updateData.firstName = firstName;
+    if (lastName !== undefined) updateData.lastName = lastName;
+    if (fullName !== undefined) updateData.fullName = fullName;
+    if (phone !== undefined) updateData.phone = phone;
+    if (dateOfBirth !== undefined) {
+      // Convert date string to Date object if provided
+      updateData.dateOfBirth = dateOfBirth ? new Date(dateOfBirth) : null;
+    }
+    if (bio !== undefined) updateData.bio = bio;
+    if (avatar !== undefined) updateData.avatar = avatar;
+
     const user = await User.findByIdAndUpdate(
       req.user.id,
-      { email },
+      updateData,
       { new: true, runValidators: true }
     );
 
@@ -97,9 +160,25 @@ exports.updateProfile = async (req, res, next) => {
       return next(new ErrorResponse("User not found", 404));
     }
 
+    // Return complete user data
+    const userData = {
+      id: user._id,
+      userId: user._id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      fullName: user.fullName,
+      phone: user.phone,
+      dateOfBirth: user.dateOfBirth ? user.dateOfBirth.toISOString() : null,
+      bio: user.bio,
+      avatar: user.avatar,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
+
     res.status(200).json({
       success: true,
-      data: { userId: user._id, email: user.email },
+      data: userData,
     });
   } catch (error) {
     next(new ErrorResponse("Failed to update profile", 500));

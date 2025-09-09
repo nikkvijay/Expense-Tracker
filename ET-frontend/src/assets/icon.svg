@@ -1,0 +1,41 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient definitions -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c1f25"/>
+      <stop offset="100%" stop-color="#3b3b3b"/>
+    </linearGradient>
+    <linearGradient id="highlightGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b7ec42"/>
+      <stop offset="100%" stop-color="#9dd632"/>
+    </linearGradient>
+    <!-- Glow effect -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Main background circle -->
+  <circle cx="32" cy="32" r="28" fill="url(#bgGradient)" filter="url(#glow)"/>
+  
+  <!-- Inner highlight circle -->
+  <circle cx="32" cy="32" r="24" fill="none" stroke="url(#highlightGradient)" stroke-width="1" opacity="0.3"/>
+  
+  <!-- Central wallet/expense icon -->
+  <rect x="22" y="26" width="20" height="14" rx="3" fill="url(#highlightGradient)"/>
+  
+  <!-- Dollar sign -->
+  <text x="32" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#0c1f25">$</text>
+  
+  <!-- Expense tracking dots/indicators -->
+  <circle cx="45" cy="20" r="1.5" fill="url(#highlightGradient)" opacity="0.8"/>
+  <circle cx="48" cy="25" r="1" fill="url(#highlightGradient)" opacity="0.6"/>
+  <circle cx="46" cy="30" r="1" fill="url(#highlightGradient)" opacity="0.4"/>
+  
+  <!-- Analytics lines -->
+  <path d="M18 44 L22 42 L26 45 L30 41" stroke="url(#highlightGradient)" stroke-width="2" fill="none" opacity="0.7"/>
+</svg>
